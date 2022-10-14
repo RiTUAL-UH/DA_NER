@@ -1,0 +1,102 @@
+{
+    "experiment":{
+        "id": "lm1.1-nw-sm",
+        "type": "finetuning",
+        "description": "fine-tune t5-base on paraphrase generation and reconstruction",
+        "seed": 42,
+        "output_dir": "results/lm"
+    },
+
+    "data": {
+        "directory": "data/linearized_domain",
+        "labeled":{
+            "source": {
+                "train": "gyafc/src/train.json",
+                "dev": "gyafc/src/dev.json",
+                "test": "gyafc/src/test.json"
+            },
+            "target": {
+                "train": "gyafc/tgt/train.json",
+                "dev": "gyafc/tgt/dev.json",
+                "test": "gyafc/tgt/test.json"
+            },
+            "columns": ["tokens", "labels"]
+        },
+        "unlabeled":{
+            "source": {
+                "train": "nw/train.json",
+                "dev": "nw/dev.json",
+                "test": "nw/test.json"
+            },
+            "target": {
+                "train": "sm/train.json",
+                "dev": "sm/dev.json",
+                "test": "sm/test.json"
+            },
+            "columns": ["tokens"]
+        }
+    },
+
+    "config": {
+        "model_name_or_path": "t5-base",
+        "src_task_prefix": "transfer formal to informal: ",
+        "tgt_task_prefix": "transfer informal to formal: "
+    },
+
+    "tokenizer": {
+        "model_name_or_path": "t5-base",
+        "new_tokens": ["<START_PERSON>", "<END_PERSON>", "<START_NORP>", "<END_NORP>", "<START_FAC>", "<END_FAC>", "<START_ORG>", "<END_ORG>", 
+            "<START_GPE>", "<END_GPE>", "<START_LOC>", "<END_LOC>", "<START_PRODUCT>", "<END_PRODUCT>", "<START_EVENT>", "<END_EVENT>", 
+            "<START_WORK_OF_ART>", "<END_WORK_OF_ART>", "<START_LAW>", "<END_LAW>", "<START_LANGUAGE>", "<END_LANGUAGE>", "<START_DATE>", 
+            "<END_DATE>", "<START_TIME>", "<END_TIME>", "<START_PERCENT>", "<END_PERCENT>", "<START_MONEY>", "<END_MONEY>", "<START_QUANTITY>", 
+            "<END_QUANTITY>", "<START_ORDINAL>", "<END_ORDINAL>", "<START_CARDINAL>", "<END_CARDINAL>"],
+        "use_fast": false,
+        "model_max_length": 512,
+        "label_pad_token_id": -100,
+        "ignore_pad_token_for_loss": true
+    },
+
+    "model": {
+        "model_class": "DAT5ForTextTransfer",
+        "model_name_or_path": "t5-base",
+        "pretrained_model_name_or_path": "lm0.0-t5-base",
+        "resume_from_pretraining": true,
+        "resume_from_checkpoint": false,
+        "freeze_classifier": false,
+        "coef_params": {
+            "lambda_para": 1.0,
+            "lambda_cycle": 0.5,
+            "lambda_cls": 1.25
+        },
+        "generation": {
+            "decoder_class": "ConstrainedDecoderWithSelection",
+            "do_sample": true,
+            "max_length": 64,
+            "min_length": 5,
+            "top_k": 50,
+            "top_p": 0.98,
+            "temperature": 1.5,
+            "early_stopping": true,
+            "num_return_sequences": 10,
+            "lambda_consistency": 1.0,
+            "lambda_adequacy": 1.0,
+            "lambda_fluency": 0.1,
+            "lambda_diversity": 0.5
+        }
+    },
+
+    "optim": {
+        "learning_rate": 1e-4,
+        "num_train_epochs": 5,
+        "max_steps": -1,
+        "per_gpu_train_batch_size": 4,
+        "per_gpu_eval_batch_size": 4,
+        "gradient_accumulation_steps": 1,
+        "weight_decay": 0.01,
+        "beta_1": 0.9,
+        "beta_2": 0.999,
+        "adam_epsilon": 1e-8,
+        "max_grad_norm": 1.0,
+        "warmup_steps": 0
+    }
+}
