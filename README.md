@@ -3,11 +3,11 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) 
 
-This repository contains the implementations of the system described in the paper ["Style Transfer as Data Augmentation: A Case Study on Named Entity Recognition"]() at [EMNLP 2022](https://2022.emnlp.org) conference.
+This repository contains the implementations of the system described in the paper ["Style Transfer as Data Augmentation: A Case Study on Named Entity Recognition"](https://aclanthology.org/2022.emnlp-main.120/) at [EMNLP 2022](https://2022.emnlp.org) conference.
 
 <div><img src="images/model_architecture.png" width="100%"/></div>
 
-The main contribution of this paper is a novel neural architecture that can effectively transform the text from a high-resource domain to a low-resource domain by changing its style-related attributes to generate synthetic data for training. Please refer to the [paper]() for details.
+The main contribution of this paper is a novel neural architecture that can effectively transform the text from a high-resource domain to a low-resource domain by changing its style-related attributes to generate synthetic data for training. Please refer to the [paper](https://aclanthology.org/2022.emnlp-main.120/) for details.
 
 
 
@@ -27,7 +27,7 @@ pip install -r requirements.txt
 
 
 ## Data
-Please download the data with the following links: [GYAFC Corpus](https://github.com/raosudha89/GYAFC-corpus), [OntoNotes-5.0-NER-BIO](https://github.com/faker2cumtb/OntoNotes-5.0-NER-BIO), and [Temporal Twitter Corpus](https://github.com/shrutirij/temporal-twitter-corpus). We provide toy datasets under the `data/linearized_domain` directory in the json format for style transfer and `data/ner` directory in the CoNLL format for NER. After downloading the data with the links above, you may need to process it so that it can have the same format as toy datasets and put them under the corresponding directory. Please refer to the [paper]() for more details.
+Please download the data with the following links: [GYAFC Corpus](https://github.com/raosudha89/GYAFC-corpus), [OntoNotes-5.0-NER-BIO](https://github.com/faker2cumtb/OntoNotes-5.0-NER-BIO), and [Temporal Twitter Corpus](https://github.com/shrutirij/temporal-twitter-corpus). We provide toy datasets under the `data/linearized_domain` directory in the json format for style transfer and `data/ner` directory in the CoNLL format for NER. After downloading the data with the links above, you may need to process it so that it can have the same format as toy datasets and put them under the corresponding directory. Please refer to the [paper](https://aclanthology.org/2022.emnlp-main.120/) for more details.
 
 #### <ins>Data processing</ins>
 For data processing, we provide some functions in `src/commons/preproc_domain.py` to convert the data between the json and CoNLL format.
@@ -83,7 +83,20 @@ CUDA_VISIBLE_DEVICES=[gpu_id] python src/exp_ner/main.py --config configs/exp_ne
 
 ## Citation
 ```
-Coming soon...
+@inproceedings{chen-etal-2022-style,
+    title = "Style Transfer as Data Augmentation: A Case Study on Named Entity Recognition",
+    author = "Chen, Shuguang  and
+      Neves, Leonardo  and
+      Solorio, Thamar",
+    booktitle = "Proceedings of the 2022 Conference on Empirical Methods in Natural Language Processing",
+    month = dec,
+    year = "2022",
+    address = "Abu Dhabi, United Arab Emirates",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2022.emnlp-main.120",
+    pages = "1827--1841",
+    abstract = "In this work, we take the named entity recognition task in the English language as a case study and explore style transfer as a data augmentation method to increase the size and diversity of training data in low-resource scenarios. We propose a new method to effectively transform the text from a high-resource domain to a low-resource domain by changing its style-related attributes to generate synthetic data for training. Moreover, we design a constrained decoding algorithm along with a set of key ingredients for data selection to guarantee the generation of valid and coherent data. Experiments and analysis on five different domain pairs under different data regimes demonstrate that our approach can significantly improve results compared to current state-of-the-art data augmentation methods. Our approach is a practical solution to data scarcity, and we expect it to be applicable to other NLP tasks.",
+}
 ```
 
 
